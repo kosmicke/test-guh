@@ -9,6 +9,6 @@ describe("<ErrorPage />", () => {
       render(<ErrorPage />);
     });
 
-    expect(screen.getByText("ErrorPage")).toBeInTheDocument();
+    expect(screen.getByText("ErrorPage 404!")).toBeInTheDocument();
   });
 });

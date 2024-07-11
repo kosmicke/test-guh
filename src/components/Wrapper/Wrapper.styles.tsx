@@ -7,6 +7,7 @@ export const WrapperContent = styled.div`
   justify-content: space-between;
   align-items: center;
   height: 100vh;
+  /* height: 100%; */
 
   background: url(${starwarsBackgroundImg}) no-repeat center;
   background-size: cover;

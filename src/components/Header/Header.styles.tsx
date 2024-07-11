@@ -7,7 +7,6 @@ export const HeaderContent = styled.div`
   justify-content: center;
   color: #fff;
   background-color: transparent;
-  margin-top: 4.5625rem; /* 74px */
 
   p {
     font-size: 1rem; /* 16px */
@@ -15,6 +14,7 @@ export const HeaderContent = styled.div`
   }
 
   @media (max-width: 767px) {
+    margin-top: 4.5625rem;
     height: 66px;
     p {
       font-size: 0.875rem; /* 14px */

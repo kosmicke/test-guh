@@ -1,3 +1,14 @@
+### Rodar o projeto
+
+- Navegar até a pasta do projeto
+- Instalar todas as dependencias usando "yarn" ou "npm install"
+
+### Exemplos de planetas que você pode pesquisar :
+
+tatooine, naboo, mustafar, kashyyyk, hoth, endor, dagobah, coruscant, bespin, alderaan.
+
+### Descrição do desafio Técnico.
+
 Desafio Técnico: Aplicativo de Informações sobre Planetas de Star Wars
 Descrição: Crie um aplicativo da web React que permite aos usuários buscar
 informações sobre planetas da saga Star Wars usando a API pública do Star Wars

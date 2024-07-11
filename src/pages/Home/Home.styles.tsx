@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import marsCollage from "../../assets/mars-collage.png";
 
 export const Wrapper = styled.div`
   display: flex;
@@ -10,14 +9,27 @@ export const Wrapper = styled.div`
   height: 100%;
   max-height: 402px;
   border-radius: 0.625rem; /* 10px */
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    max-width: none;
+  }
 `;
 
 export const WrapperContent = styled.div`
   flex: 1;
   height: 100%;
-  background: url(${marsCollage}) no-repeat center;
   background-size: cover;
   border-radius: 0.625rem; /* 10px */
+
+  @media (max-width: 768px) {
+    /* width: 95%;
+    max-width: none; */
+    img {
+      width: 300px;
+      height: 188px;
+    }
+  }
 `;
 
 export const FormContainer = styled.div`
@@ -49,6 +61,15 @@ export const FormContainer = styled.div`
     border: none;
     margin-top: 1.5rem;
   }
+
+  @media (max-width: 768px) {
+    min-height: auto;
+    max-width: 300px;
+    font-size: 1.125rem; /* 18px */
+    div {
+      padding: 1rem;
+    }
+  }
 `;
 
 export const Button = styled.button`
@@ -65,10 +86,28 @@ export const Button = styled.button`
   gap: 0.625rem; /* 10px */
 `;
 
-export const Filter = styled.div`
+// export const DivNav = styled.div`
+//   background-color: transparent;
+//   position: absolute;
+//   top: 60%;
+//   left: 12%;
+// `;
+
+export const DivNav = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
-  select {
-    background-color: transparent;
-    border: none;
+  justify-content: center;
+  align-items: center;
+  margin: 35% 50% 0 0;
+
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 300px;
+    object-fit: contain;
   }
 `;
