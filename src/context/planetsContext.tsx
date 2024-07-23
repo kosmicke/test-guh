@@ -51,6 +51,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
     setSelectedPlanet({ ...selectedPlanet, name });
   };
 
+  // Buscar os dados dos planetas usando o getPlanets
   const fetchPlanets = async () => {
     try {
       const data = await getPlanets();
@@ -66,6 +67,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
+  // Selecionar um planeta pelo nome e carregar suas informações
   const selectPlanet = async (name: string) => {
     setIsLoadingData(true);
 
@@ -74,7 +76,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
       (p) => p.name.toLowerCase() === name.toLowerCase()
     );
     const planet = currentPlanets[index];
-
+    // usar getFilm e getPeople para carregar as informações dos planetas para evitar mais chamadas na api
     try {
       if (!planet.fullFilms) {
         const films = planet.films.map(async (url) => {
@@ -124,6 +126,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
   );
 };
 
+// Exportar o contexto
 export const useAppContext = (): AppContextType => {
   const context = useContext(AppContext);
   if (!context) {
