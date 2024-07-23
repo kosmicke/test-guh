@@ -4,6 +4,7 @@ import React, {
   useState,
   ReactNode,
   useEffect,
+  useMemo,
 } from "react";
 import { Planet } from "../services/planets/model";
 import { getPlanets } from "../services/planets/getPlanets";
@@ -43,12 +44,12 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
       if (planet.name === selectedPlanet.name) {
         return { ...planet, name };
       }
-
       return planet;
     });
 
     setPlanets(newPlanets);
     setSelectedPlanet({ ...selectedPlanet, name });
+    alert("Planeta atualizado");
   };
 
   // Buscar os dados dos planetas usando o getPlanets
@@ -107,6 +108,16 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
     setIsLoadingData(false);
   };
 
+  const memoizedPlanet = useMemo(() => {
+    if (!selectedPlanet) return;
+
+    return {
+      ...selectedPlanet,
+      fullFilms: selectedPlanet.fullFilms,
+      fullResidents: selectedPlanet.fullResidents,
+    };
+  }, [selectedPlanet]);
+
   useEffect(() => {
     fetchPlanets();
   }, []);
@@ -114,7 +125,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
   return (
     <AppContext.Provider
       value={{
-        selectedPlanet,
+        selectedPlanet: memoizedPlanet,
         isLoadingData,
         getPlanetByName,
         editPlanet,

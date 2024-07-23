@@ -119,18 +119,18 @@ export const ResponsiveForm = styled.div`
   padding: 3rem;
 `;
 
-export const ResponsiveContainer = styled.div`
-  display: flex;
-  align-items: center;
-  background-color: transparent;
-  gap: 1rem;
-  font-size: 15px;
+// export const ResponsiveContainer = styled.div`
+//   display: flex;
+//   align-items: center;
+//   background-color: transparent;
+//   gap: 1rem;
+//   font-size: 15px;
 
-  @media (min-width: 768px) {
-    flex-direction: row;
-    padding: 1rem;
-  }
-`;
+//   @media (min-width: 768px) {
+//     flex-direction: row;
+//     padding: 1rem;
+//   }
+// `;
 
 export const FilterSelectContainer = styled.div`
   display: flex;
