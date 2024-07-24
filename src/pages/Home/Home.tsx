@@ -1,41 +1,76 @@
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { Search, Tune } from "@mui/icons-material";
+
+import { useAppContext } from "../../context/planetsContext";
+import marsCollage from "../../assets/mars-collage.png";
+import spaceship from "../../assets/spaceship.png";
+import { Planet } from "../../services/planets/model";
+import { SearchBy } from "./types";
 import {
   FormContainer,
   Wrapper,
   WrapperContent,
   Button,
   DivNav,
-  ResponsiveContainer,
   FilterSelectContainer,
   ResponsiveForm,
 } from "./Home.styles";
-import { Search, Tune } from "@mui/icons-material";
-import { useForm } from "react-hook-form";
-import { useAppContext } from "../../context/planetsContext";
-import { useNavigate } from "react-router-dom";
-import marsCollage from "../../assets/mars-collage.png";
-import spaceship from "../../assets/spaceship.png";
 
 interface SearchForm {
-  name: string;
-  population: string;
+  value: string;
+  searchBy: SearchBy;
 }
 
+const defaultValues: SearchForm = {
+  value: "",
+  searchBy: "name",
+};
+
 function Home() {
-  const { register, handleSubmit } = useForm<SearchForm>();
-  const { getPlanetByName, selectPlanet } = useAppContext();
+  const [filteredPlanets, setFilteredPlanets] = useState<Planet[]>([]);
+
+  const { planets, isLoading, selectPlanet } = useAppContext();
 
   const navigate = useNavigate();
 
-  const onSubmit = (data: SearchForm) => {
-    const foundPlanet = getPlanetByName(data.name);
+  const { register, handleSubmit } = useForm<SearchForm>({
+    defaultValues,
+  });
 
-    if (!foundPlanet) {
-      window.alert("Planeta não encontrado.");
-    } else {
-      selectPlanet(data.name);
-      navigate("/detail");
+  const onSubmit = (data: SearchForm) => {
+    if (!data.value) {
+      setFilteredPlanets(planets);
+      return;
+    }
+
+    if (data.searchBy === "name") {
+      const newFilteredPlanets = planets.filter((planet) =>
+        planet.name.toLowerCase().includes(data.value.toLowerCase())
+      );
+
+      setFilteredPlanets(newFilteredPlanets);
+      return;
+    }
+
+    if (data.searchBy === "population") {
+      const newFilteredPlanets = planets.filter(
+        (planet) => planet.population === data.value
+      );
+
+      setFilteredPlanets(newFilteredPlanets);
     }
   };
+
+  const handlePlanetSelect = (planetId: string) => {
+    selectPlanet(planetId);
+    navigate("/detail");
+  };
+
+  useEffect(() => {
+    setFilteredPlanets(planets);
+  }, [planets]);
 
   return (
     <>
@@ -55,7 +90,7 @@ function Home() {
             <ResponsiveForm>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <input
-                  {...register("name")}
+                  {...register("value")}
                   type="text"
                   placeholder="Enter the name in the planet"
                 />
@@ -68,36 +103,57 @@ function Home() {
                 <FilterSelectContainer>
                   <Tune />
                   Filter
-                  <select disabled>
-                    <option value="">Name</option>
-                    <option value="tatooine">tatooine</option>
-                    <option value="naboo">naboo</option>
-                    <option value="mustafar">mustafar</option>
-                    <option value="kashyyyk">kashyyyk</option>
-                    <option value="hoth">hoth</option>
-                    <option value="endor">endor</option>
-                    <option value="dagobah">dagobah</option>
-                    <option value="coruscant">coruscant</option>
-                    <option value="bespin">bespin</option>
-                    <option value="alderaan">alderaan</option>
-                  </select>
-                  <select disabled>
-                    <option value="">Population</option>
-                    <option value="1000000000000">1000000000000</option>
-                    <option value="6000000">6000000</option>
-                    <option value="unknown">unknown</option>
-                    <option value="1000000000000">1000000000000</option>
-                    <option value="6000000">6000000</option>
-                    <option value="2000000000">2000000000</option>
-                    <option value="unknown">unknown</option>
-                    <option value="1000000000000">1000000000000</option>
-                    <option value="6000000">6000000</option>
-                    <option value="2000000000">2000000000</option>
-                  </select>
+                  <label>
+                    Name
+                    <input
+                      type="radio"
+                      value="name"
+                      {...register("searchBy")}
+                    />
+                  </label>
+                  <label>
+                    Population
+                    <input
+                      type="radio"
+                      value="population"
+                      {...register("searchBy")}
+                    />
+                  </label>
                 </FilterSelectContainer>
                 {/* </ResponsiveContainer> */}
               </form>
             </ResponsiveForm>
+            {isLoading && <p>Loading...</p>}
+
+            {!isLoading && filteredPlanets.length === 0 && (
+              <p>No planet found</p>
+            )}
+
+            {!isLoading && filteredPlanets.length > 0 && (
+              <table>
+                <thead>
+                  <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Population</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredPlanets.map((planet) => (
+                    <tr key={planet.name}>
+                      <td>{planet.id}</td>
+                      <td>{planet.name}</td>
+                      <td>{planet.population}</td>
+                      <td>
+                        <button onClick={() => handlePlanetSelect(planet.id)}>
+                          Open
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </FormContainer>
       </Wrapper>
